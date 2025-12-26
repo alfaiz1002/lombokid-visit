@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="https://unpkg.com/splitting@1.0.6/dist/splitting.css">
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.1/mapbox-gl-directions.js"></script>
+    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.1/mapbox-gl-directions.css" type="text/css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Chiron+Hei+HK:wght@400;700&family=Quattrocento+Sans:wght@400;700&family=Hedvig+Letters+Sans:wght@400&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -361,6 +363,518 @@
             box-shadow: 0 0 30px rgba(228, 123, 90, 0.6);
             transform: translateY(-2px);
         }
+        
+        /* Enhanced Map Controls */
+        .enhanced-marker {
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .marker-circle {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+        
+        .visitor-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: white;
+            color: #333;
+            font-size: 10px;
+            font-weight: bold;
+            padding: 2px 5px;
+            border-radius: 10px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+        }
+        
+        .map-controls-enhanced {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 1000;
+        }
+        
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            background: rgba(0,0,0,0.7);
+            padding: 8px;
+            border-radius: 8px;
+            backdrop-filter: blur(5px);
+        }
+        
+        .control-btn {
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .control-btn:hover {
+            background: var(--accent);
+            transform: scale(1.1);
+        }
+        
+        .nearby-places-panel {
+            animation: slideIn 0.3s ease;
+        }
+        
+        .route-info {
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        
+        /* Real-time Info Panel */
+        .real-time-panel {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.85);
+            color: white;
+            padding: 15px;
+            border-radius: 12px;
+            max-width: 300px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            z-index: 1000;
+        }
+        
+        .real-time-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .real-time-title {
+            font-weight: bold;
+            font-size: 14px;
+            color: var(--accent);
+        }
+        
+        .real-time-update {
+            font-size: 11px;
+            color: #aaa;
+        }
+        
+        .real-time-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+        
+        .stat-item {
+            background: rgba(255,255,255,0.1);
+            padding: 8px;
+            border-radius: 6px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 16px;
+            font-weight: bold;
+            color: var(--accent);
+        }
+        
+        .stat-label {
+            font-size: 10px;
+            color: #ccc;
+            margin-top: 2px;
+        }
+        
+        /* Navigation Panel */
+        .navigation-panel {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.85);
+            color: white;
+            padding: 15px;
+            border-radius: 12px;
+            max-width: 350px;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+        
+        .navigation-input {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        
+        .navigation-input::placeholder {
+            color: rgba(255,255,255,0.6);
+        }
+        
+        .route-info-display {
+            background: rgba(228, 123, 90, 0.1);
+            border: 1px solid var(--accent);
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+        
+        .route-detail {
+            display: flex;
+            justify-content: space-between;
+            margin: 5px 0;
+        }
+        
+        /* Destination Card Hover Effect */
+        .card-destination:hover .destination-actions {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .destination-actions {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+            padding: 20px 15px 15px;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: space-around;
+        }
+        
+        .action-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .action-btn:hover {
+            background: white;
+            color: var(--accent);
+        }
+        
+        /* Traffic Legend */
+        .traffic-legend {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.85);
+            color: white;
+            padding: 15px;
+            border-radius: 12px;
+            max-width: 200px;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+        
+        .traffic-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 5px 0;
+        }
+        
+        .traffic-color {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+        }
+        
+        .traffic-low { background: #10B981; }
+        .traffic-medium { background: #F59E0B; }
+        .traffic-high { background: #EF4444; }
+        
+        /* Destination Modal */
+        .destination-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(5px);
+        }
+        
+        .modal-content {
+            position: relative;
+            background: var(--bg-primary);
+            border-radius: 20px;
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            z-index: 10001;
+            border: 1px solid rgba(228, 123, 90, 0.3);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+        
+        .light-mode .modal-content {
+            background: var(--bg-light);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 30px;
+            border-bottom: 1px solid rgba(228, 123, 90, 0.2);
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 24px;
+            cursor: pointer;
+            padding: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .close-btn:hover {
+            color: var(--accent);
+            transform: rotate(90deg);
+        }
+        
+        .modal-body {
+            padding: 30px;
+        }
+        
+        .destination-image {
+            position: relative;
+            height: 300px;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        
+        .destination-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .real-time-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            backdrop-filter: blur(5px);
+        }
+        
+        .visitor-status {
+            padding: 3px 10px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .visitor-status.low { background: #10B981; }
+        .visitor-status.medium { background: #F59E0B; }
+        .visitor-status.high { background: #EF4444; }
+        
+        .info-section {
+            margin-bottom: 25px;
+        }
+        
+        .info-section h3 {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--accent);
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin: 25px 0;
+        }
+        
+        .info-card {
+            background: rgba(228, 123, 90, 0.1);
+            border: 1px solid rgba(228, 123, 90, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .info-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+        
+        .info-value {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--accent);
+        }
+        
+        .info-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 5px;
+        }
+        
+        .navigation-section {
+            background: rgba(0,0,0,0.2);
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 25px;
+        }
+        
+        .nav-btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .nav-btn.primary {
+            background: var(--accent);
+            color: white;
+        }
+        
+        .nav-btn.primary:hover {
+            background: #f39c6b;
+            transform: translateY(-2px);
+        }
+        
+        .nav-btn.secondary {
+            background: rgba(255,255,255,0.1);
+            color: var(--text-primary);
+            border: 2px solid var(--accent);
+        }
+        
+        .nav-btn.secondary:hover {
+            background: var(--accent);
+            color: white;
+        }
+        
+        .route-estimate {
+            background: rgba(0,0,0,0.3);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+        
+        .route-estimate h4 {
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+        
+        .mapboxgl-popup-content {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            border: 1px solid rgba(228, 123, 90, 0.3);
+            border-radius: 15px;
+        }
+        
+        .light-mode .mapboxgl-popup-content {
+            background: var(--bg-light);
+            color: var(--text-light);
+        }
+        
+        .mapboxgl-popup-close-button {
+            color: var(--text-primary);
+            font-size: 18px;
+            padding: 5px 10px;
+        }
+        
+        .mapboxgl-popup-close-button:hover {
+            color: var(--accent);
+        }
+        
+        .mapboxgl-ctrl-geocoder {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            border: 1px solid rgba(228, 123, 90, 0.3);
+            border-radius: 10px;
+            width: 300px;
+        }
+        
+        .light-mode .mapboxgl-ctrl-geocoder {
+            background: var(--bg-light);
+            color: var(--text-light);
+        }
+        
+        .mapbox-directions-component {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+        }
+        
+        .light-mode .mapbox-directions-component {
+            background: var(--bg-light);
+            color: var(--text-light);
+        }
     </style>
 </head>
 <body class="grid-pattern">
@@ -472,10 +986,13 @@
             <div class="scroll-reveal">
                 <div class="map-container">
                     <div id="map"></div>
-                    <div class="map-controls">
-                        <button class="map-control-btn" onclick="centerMap()" data-translate="map.center">Center</button>
-                        <button class="map-control-btn" onclick="toggleTraffic()" data-translate="map.traffic">Traffic</button>
-                        <button class="map-control-btn" onclick="toggleSatellite()" data-translate="map.satellite">Satellite</button>
+                    <div class="map-controls-enhanced">
+                        <div class="control-group">
+                            <button class="control-btn" onclick="centerMap()" title="Pusatkan Peta">🎯</button>
+                            <button class="control-btn" onclick="toggleTraffic()" title="Toggle Traffic">🚦</button>
+                            <button class="control-btn" onclick="toggleSatellite()" title="Toggle Satellite">🛰️</button>
+                            <button class="control-btn" onclick="findNearbyPlaces()" title="Tempat Terdekat">🔍</button>
+                        </div>
                     </div>
                     <div class="visitor-legend">
                         <div class="font-bold mb-2" data-translate="map.visitorLegend">Kepadatan Pengunjung:</div>
