@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tentang Lombok - Visit Lombok ID</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Chiron+Hei+HK:wght@400;700&family=Quattrocento+Sans:wght@400;700&family=Hedvig+Letters+Sans:wght@400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #06141D;
+            --text-primary: #D9DDE0;
+            --text-secondary: #5F737C;
+            --accent: #E47B5A;
+        }
+        
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: 'Quattrocento Sans', sans-serif;
+            overflow-x: hidden;
+        }
+        
+        .font-orbitron { font-family: 'Orbitron', sans-serif; }
+        .font-chiron { font-family: 'Chiron Hei HK', sans-serif; }
+        .font-hedvig { font-family: 'Hedvig Letters Sans', sans-serif; }
+        
+        .grid-pattern {
+            background-image: 
+                linear-gradient(rgba(228, 123, 90, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(228, 123, 90, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+        
+        .text-gradient {
+            background: linear-gradient(45deg, var(--accent), #F39C6B);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .nav-link {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+        
+        .scroll-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .card-feature {
+            background: linear-gradient(135deg, rgba(217, 221, 224, 0.05), rgba(95, 115, 124, 0.1));
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(217, 221, 224, 0.1);
+            transition: all 0.4s ease;
+        }
+        
+        .card-feature:hover {
+            transform: translateY(-10px);
+            border-color: rgba(228, 123, 90, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .floating-element {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .timeline-item {
+            position: relative;
+            padding-left: 2rem;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.5rem;
+            width: 12px;
+            height: 12px;
+            background: var(--accent);
+            border-radius: 50%;
+        }
+        
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            left: 5px;
+            top: 1.5rem;
+            width: 2px;
+            height: calc(100% - 1rem);
+            background: rgba(228, 123, 90, 0.3);
+        }
+        
+        .timeline-item:last-child::after {
+            display: none;
+        }
+    </style>
+</head>
+<body class="grid-pattern">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 bg-black bg-opacity-20 backdrop-blur-md border-b border-gray-700 border-opacity-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <a href="index.html" class="font-orbitron text-2xl font-bold text-gradient">VISIT LOMBOK ID</a>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="index.html" class="nav-link text-white hover:text-accent px-3 py-2 text-sm font-medium">Beranda</a>
+                        <a href="destinations.html" class="nav-link text-white hover:text-accent px-3 py-2 text-sm font-medium">Destinasi</a>
+                        <a href="about.html" class="nav-link text-accent px-3 py-2 text-sm font-medium">Tentang</a>
+                        <a href="contact.html" class="nav-link text-white hover:text-accent px-3 py-2 text-sm font-medium">Kontak</a>
+                    </div>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" class="text-white hover:text-accent">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="md:hidden hidden bg-black bg-opacity-90 backdrop-blur-md">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="index.html" class="text-white hover:text-accent block px-3 py-2 text-base font-medium">Beranda</a>
+                <a href="destinations.html" class="text-white hover:text-accent block px-3 py-2 text-base font-medium">Destinasi</a>
+                <a href="about.html" class="text-accent block px-3 py-2 text-base font-medium">Tentang</a>
+                <a href="contact.html" class="text-white hover:text-accent block px-3 py-2 text-base font-medium">Kontak</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="pt-24 pb-20 px-4 relative">
+        <div class="absolute inset-0 overflow-hidden">
+            <div class="floating-element absolute top-20 left-10 w-2 h-2 bg-accent rounded-full opacity-60"></div>
+            <div class="floating-element absolute top-40 right-20 w-1 h-1 bg-white rounded-full opacity-40" style="animation-delay: -2s;"></div>
+            <div class="floating-element absolute bottom-40 left-1/4 w-3 h-3 bg-accent rounded-full opacity-30" style="animation-delay: -4s;"></div>
+        </div>
+        
+        <div class="max-w-7xl mx-auto text-center relative z-10">
+            <h1 class="font-orbitron text-4xl md:text-6xl font-bold mb-6 text-gradient scroll-reveal">
+                MENGAPA LOMBOK?
+            </h1>
+            <p class="font-hedvig text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed scroll-reveal">
+                Pulau seribu pesona yang menawarkan keindahan alam tak tertandingi, 
+                budaya kaya, dan pengalaman wisata yang tak terlupakan
+            </p>
+        </div>
+    </section>
+
+    <!-- About Lombok Section -->
+    <section class="py-20 px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div class="scroll-reveal">
+                    <h2 class="font-orbitron text-3xl md:text-4xl font-bold mb-8 text-gradient">
+                        PULAU SERIBU PESONA
+                    </h2>
+                    <div class="space-y-6 font-quattrocento text-gray-300 text-lg leading-relaxed">
+                        <p>
+                            Lombok, sebuah permata tersembunyi di Indonesia Timur, menawarkan kombinasi sempurna 
+                            antara keindahan alam yang spektakuler dan kekayaan budaya yang autentik. 
+                            Terletak di Provinsi Nusa Tenggara Barat, pulau ini menjadi destinasi wisata 
+                            yang semakin populer di kalangan traveler domestik maupun internasional.
+                        </p>
+                        <p>
+                            Dengan luas sekitar 4.725 kilometer persegi, Lombok menawarkan beragam atraksi 
+                            mulai dari pantai berpasir putih yang menakjubkan, gunung berapi yang menjulang tinggi, 
+                            air terjun yang memukau, hingga kekayaan budaya masyarakat Sasak yang merupakan 
+                            penduduk asli pulau ini.
+                        </p>
+                        <p>
+                            Keunikan Lombok terletak pada keseimbangannya antara kemajuan pariwisata 
+                            dan pelestarian budaya tradisional, menjadikannya tempat yang sempurna 
+                            untuk mereka yang mencari petualangan sekaligus kedamaian.
+                        </p>
+                    </div>
+                </div>
+                <div class="scroll-reveal">
+                    <div class="relative">
+                        <div class="aspect-video rounded-2xl overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1573790387438-4da905039392?w=800" 
+                                 alt="Beautiful Lombok Landscape" 
+                                 class="w-full h-full object-cover">
+                        </div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-40 rounded-2xl"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-20 px-4 bg-gradient-to-r from-black via-gray-900 to-black">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16 scroll-reveal">
+                <h2 class="font-orbitron text-3xl md:text-4xl font-bold mb-6 text-gradient">
+                    KEUNGGULAN LOMBOK
+                </h2>
+                <p class="font-hedvig text-xl text-gray-300 max-w-3xl mx-auto">
+                    Apa yang membuat Lombok istimewa dan berbeda dari destinasi lain?
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="card-feature rounded-2xl p-8 scroll-reveal">
+                    <div class="text-accent text-4xl mb-6">🏖️</div>
+                    <h3 class="font-orbitron text-xl font-bold mb-4 text-white">Pantai Berpasir Putih</h3>
+                    <p class="font-quattrocento text-gray-300">
+                        Lebih dari 85 pantai dengan pasir putih yang lembut dan air laut yang jernih, 
+                        sempurna untuk bersantai, berenang, dan menikmati sunset yang menakjubkan.
+                    </p>
+                </div>
+                
+                <div class="card-feature rounded-2xl p-8 scroll-reveal">
+                    <div class="text-accent text-4xl mb-6">🗻</div>
+                    <h3 class="font-orbitron text-xl font-bold mb-4 text-white">Gunung Rinjani</h3>
+                    <p class="font-quattrocento text-gray-300">
+                        Gunung berapi tertinggi kedua di Indonesia dengan ketinggian 3.726 meter, 
+                        menawarkan trekking epik dan pemandangan kawah yang spektakuler.
+                    </p>
+                </div>
+                
+                <div class="card-feature rounded-2xl p-8 scroll-reveal">
+                    <div class="text-accent text-4xl mb-6">🏝️</div>
+                    <h3 class="font-orbitron text-xl font-bold mb-4 text-white">Kepulauan Gili</h3>
+                    <p class="font-quattrocento text-gray-300">
+                        Tiga pulau kecantikan (Gili Trawangan, Meno, Air) dengan kehidupan bawah laut 
+                        yang kaya dan suasana yang romantis.
+                    </p>
+                </div>
+                
+                <div class="card-feature rounded-2xl p-8 scroll-reveal">
+                    <div class="text-accent text-4xl mb-6">💧</div>
+                    <h3 class="font-orbitron text-xl font-bold mb-4 text-white">Air Terjun</h3>
+                    <p class="font-quattrocento text-gray-300">
+                        Lebih dari 25 air terjun menakjubkan termasuk Tiu Kelep dan Benang Kelambu 
+                        yang menawarkan kesegaran alami dan pemandangan alam yang memukau.
+                    </p>
+                </div>
+                
+                <div class="card-feature rounded-2xl p-8 scroll-reveal">
+                    <div class="text-accent text-4xl mb-6">🏛️</div>
+                    <h3 class="font-orbitron text-xl font-bold mb-4 text-white">Budaya Sasak</h3>
+                    <p class="font-quattrocento text-gray-300">
+                        Kehidupan masyarakat pribumi dengan adat istiadat, arsitektur tradisional, 
+                        dan kerajinan tangan yang unik dan autentik.
+                    </p>
+                </div>
+                
+                <div class="card-feature rounded-2xl p-8 scroll-reveal">
+                    <div class="text-accent text-4xl mb-6">🌶️</div>
+                    <h3 class="font-orbitron text-xl font-bold mb-4 text-white">Kuliner Pedas</h3>
+                    <p class="font-quattrocento text-gray-300">
+                        Masakan khas yang terkenal dengan cita rasa pedasnya, termasuk 
+                        Ayam Taliwang, Plecing Kangkung, dan Sate Rembiga.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- History Timeline -->
+    <section class="py-20 px-4">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-16 scroll-reveal">
+                <h2 class="font-orbitron text-3xl md:text-4xl font-bold mb-6 text-gradient">
+                    SEJARAH SINGKAT LOMBOK
+                </h2>
+                <p class="font-hedvig text-xl text-gray-300">
+                    Perjalanan Lombok dari masa ke masa
+                </p>
+            </div>
+            
+            <div class="space-y-12">
+                <div class="timeline-item scroll-reveal">
+                    <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6">
+                        <h3 class="font-orbitron text-xl font-bold text-accent mb-2">Abad ke-14</h3>
+                        <h4 class="font-chiron text-lg font-bold text-white mb-3">Kedatangan Islam</h4>
+                        <p class="font-quattrocento text-gray-300">
+                            Islam mulai masuk ke Lombok melalui pedagang dan missionaris, 
+                            memengaruhi kebudayaan dan kehidupan masyarakat pribumi Sasak.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item scroll-reveal">
+                    <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6">
+                        <h3 class="font-orbitron text-xl font-bold text-accent mb-2">1740-1894</h3>
+                        <h4 class="font-chiron text-lg font-bold text-white mb-3">Era Kerajaan</h4>
+                        <p class="font-quattrocento text-gray-300">
+                            Lombok dipengaruhi oleh Kerajaan Karangasem dari Bali dan kemudian 
+                            berkembang menjadi beberapa kerajaan kecil seperti Selaparang.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item scroll-reveal">
+                    <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6">
+                        <h3 class="font-orbitron text-xl font-bold text-accent mb-2">1894</h3>
+                        <h4 class="font-chiron text-lg font-bold text-white mb-3">Kolonisasi Belanda</h4>
+                        <p class="font-quattrocento text-gray-300">
+                            Tentara Belanda mengalahkan Kerajaan Selaparang dan mengintegrasikan 
+                            Lombok ke dalam Hindia Belanda.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item scroll-reveal">
+                    <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6">
+                        <h3 class="font-orbitron text-xl font-bold text-accent mb-2">1958</h3>
+                        <h4 class="font-chiron text-lg font-bold text-white mb-3">Provinsi NTB</h4>
+                        <p class="font-quattrocento text-gray-300">
+                            Lombok resmi menjadi bagian dari Provinsi Nusa Tenggara Barat 
+                            setelah Indonesia merdeka dan mengalami pemekaran wilayah.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item scroll-reveal">
+                    <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6">
+                        <h3 class="font-orbitron text-xl font-bold text-accent mb-2">1980-an</h3>
+                        <h4 class="font-chiron text-lg font-bold text-white mb-3">Era Pariwisata</h4>
+                        <p class="font-quattrocento text-gray-300">
+                            Lombok mulai berkembang sebagai destinasi wisata dengan 
+                            pembukaan akses ke Gili Islands dan Senggigi.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item scroll-reveal">
+                    <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6">
+                        <h3 class="font-orbitron text-xl font-bold text-accent mb-2">2025</h3>
+                        <h4 class="font-chiron text-lg font-bold text-white mb-3">Digital Tourism</h4>
+                        <p class="font-quattrocento text-gray-300">
+                            Visit Lombok ID hadir untuk memperkenalkan keindahan Lombok 
+                            kepada dunia melalui pengalaman digital yang futuristik.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="py-20 px-4 bg-gradient-to-r from-accent to-orange-500">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="font-orbitron text-3xl md:text-4xl font-bold mb-6 text-white scroll-reveal">
+                SIAP MENJELAJAH LOMBOK?
+            </h2>
+            <p class="font-hedvig text-xl text-white mb-8 scroll-reveal">
+                Temukan 170 destinasi menakjubkan yang menanti untuk dijelajahi
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center scroll-reveal">
+                <a href="destinations.html" class="bg-white text-gray-900 px-8 py-4 rounded-full text-lg font-chiron font-bold hover:bg-gray-100 transition-all">
+                    MULAI EKSPLORASI
+                </a>
+                <a href="contact.html" class="border-2 border-white text-white px-8 py-4 rounded-full text-lg font-chiron font-bold hover:bg-white hover:text-gray-900 transition-all">
+                    HUBUNGI KAMI
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-black bg-opacity-50 py-12 px-4 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto text-center">
+            <div class="mb-8">
+                <h3 class="font-orbitron text-3xl font-bold text-gradient mb-4">VISIT LOMBOK ID</h3>
+                <p class="font-hedvig text-gray-300 max-w-2xl mx-auto">
+                    Portal wisata terlengkap untuk menjelajahi keindahan Pulau Lombok. 
+                    Temukan destinasi impian Anda dengan pengalaman digital yang futuristik.
+                </p>
+            </div>
+            
+            <div class="border-t border-gray-800 pt-8">
+                <p class="font-hedvig text-gray-400 text-sm">
+                    © 2025 Visit Lombok ID. All rights reserved. | Made with ❤️ for Lombok Tourism
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+
+        // Scroll reveal
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.scroll-reveal').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>

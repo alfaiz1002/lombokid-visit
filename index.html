@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visit Lombok ID - Portal Wisata Lombok Terlengkap</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.12/typed.min.js"></script>
+    <script src="https://unpkg.com/splitting@1.0.6/dist/splitting.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/splitting@1.0.6/dist/splitting.css">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Chiron+Hei+HK:wght@400;700&family=Quattrocento+Sans:wght@400;700&family=Hedvig+Letters+Sans:wght@400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #06141D;
+            --text-primary: #D9DDE0;
+            --text-secondary: #5F737C;
+            --accent: #E47B5A;
+            --bg-light: #F8F7F4;
+            --text-light: #2C3E50;
+        }
+        
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: 'Quattrocento Sans', sans-serif;
+            overflow-x: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        body.light-mode {
+            background-color: var(--bg-light);
+            color: var(--text-light);
+        }
+        
+        .font-orbitron { font-family: 'Orbitron', sans-serif; }
+        .font-chiron { font-family: 'Chiron Hei HK', sans-serif; }
+        .font-hedvig { font-family: 'Hedvig Letters Sans', sans-serif; }
+        
+        .hero-bg {
+            background: linear-gradient(135deg, rgba(6, 20, 29, 0.8), rgba(95, 115, 124, 0.3)), 
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><defs><linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:%23E47B5A;stop-opacity:0.1" /><stop offset="100%" style="stop-color:%2306141D;stop-opacity:0.3" /></linearGradient></defs><rect width="1200" height="800" fill="url(%23grad)"/><circle cx="200" cy="150" r="3" fill="%23E47B5A" opacity="0.8"/><circle cx="800" cy="200" r="2" fill="%23D9DDE0" opacity="0.6"/><circle cx="1000" cy="400" r="4" fill="%23E47B5A" opacity="0.5"/><circle cx="300" cy="600" r="2" fill="%23D9DDE0" opacity="0.7"/></svg>');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        
+        .light-mode .hero-bg {
+            background: linear-gradient(135deg, rgba(248, 247, 244, 0.9), rgba(231, 164, 111, 0.2)), 
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><defs><linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:%23E47B5A;stop-opacity:0.1" /><stop offset="100%" style="stop-color:%23F8F7F4;stop-opacity:0.2" /></linearGradient></defs><rect width="1200" height="800" fill="url(%23grad)"/><circle cx="200" cy="150" r="3" fill="%23E47B5A" opacity="0.6"/><circle cx="800" cy="200" r="2" fill:"%232C3E50" opacity="0.4"/><circle cx="1000" cy="400" r="4" fill="%23E47B5A" opacity="0.3"/><circle cx="300" cy="600" r="2" fill="%232C3E50" opacity="0.5"/></svg>');
+        }
+        
+        .glow-effect {
+            box-shadow: 0 0 20px rgba(228, 123, 90, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .glow-effect:hover {
+            box-shadow: 0 0 30px rgba(228, 123, 90, 0.6);
+            transform: translateY(-2px);
+        }
+        
+        .btn-futuristic {
+            background: linear-gradient(45deg, var(--accent), #F39C6B);
+            border: none;
+            color: var(--bg-primary);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+        
+        .light-mode .btn-futuristic {
+            color: var(--text-light);
+        }
+        
+        .btn-futuristic::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .btn-futuristic:hover::before {
+            left: 100%;
+        }
+        
+        .btn-futuristic:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(228, 123, 90, 0.4);
+        }
+        
+        .card-destination {
+            background: linear-gradient(135deg, rgba(217, 221, 224, 0.05), rgba(95, 115, 124, 0.1));
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(217, 221, 224, 0.1);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .light-mode .card-destination {
+            background: linear-gradient(135deg, rgba(44, 62, 80, 0.05), rgba(127, 140, 141, 0.1));
+            border: 1px solid rgba(44, 62, 80, 0.1);
+        }
+        
+        .card-destination::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(228, 123, 90, 0.1), rgba(228, 123, 90, 0.05));
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        
+        .card-destination:hover::before {
+            opacity: 1;
+        }
+        
+        .card-destination:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: rgba(228, 123, 90, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .light-mode .card-destination:hover {
+            box-shadow: 0 20px 40px rgba(44, 62, 80, 0.2);
+        }
+        
+        .filter-btn {
+            background: rgba(95, 115, 124, 0.2);
+            border: 1px solid rgba(95, 115, 124, 0.3);
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+        
+        .light-mode .filter-btn {
+            background: rgba(44, 62, 80, 0.1);
+            border: 1px solid rgba(44, 62, 80, 0.2);
+            color: var(--text-light);
+        }
+        
+        .filter-btn.active,
+        .filter-btn:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: var(--bg-primary);
+            box-shadow: 0 0 15px rgba(228, 123, 90, 0.4);
+        }
+        
+        .light-mode .filter-btn.active,
+        .light-mode .filter-btn:hover {
+            color: white;
+        }
+        
+        .text-gradient {
+            background: linear-gradient(45deg, var(--accent), #F39C6B);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .nav-link {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+        
+        .scroll-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .grid-pattern {
+            background-image: 
+                linear-gradient(rgba(228, 123, 90, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(228, 123, 90, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+        
+        .light-mode .grid-pattern {
+            background-image: 
+                linear-gradient(rgba(228, 123, 90, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(228, 123, 90, 0.05) 1px, transparent 1px);
+        }
+        
+        .floating-element {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: var(--accent);
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(228, 123, 90, 0.3);
+        }
+        
+        .theme-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(228, 123, 90, 0.5);
+        }
+        
+        .language-selector {
+            position: fixed;
+            top: 20px;
+            right: 80px;
+            z-index: 1000;
+            background: rgba(217, 221, 224, 0.1);
+            border: 1px solid rgba(228, 123, 90, 0.3);
+            border-radius: 25px;
+            padding: 8px 16px;
+            color: var(--text-primary);
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .light-mode .language-selector {
+            background: rgba(44, 62, 80, 0.1);
+            border: 1px solid rgba(228, 123, 90, 0.3);
+            color: var(--text-light);
+        }
+        
+        .language-selector:hover {
+            border-color: var(--accent);
+            box-shadow: 0 0 10px rgba(228, 123, 90, 0.3);
+        }
+        
+        .visitor-indicator {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        
+        .visitor-high {
+            background: #EF4444;
+            color: white;
+        }
+        
+        .visitor-medium {
+            background: #F59E0B;
+            color: white;
+        }
+        
+        .visitor-low {
+            background: #10B981;
+            color: white;
+        }
+        
+        .map-container {
+            height: 500px;
+            border-radius: 1rem;
+            overflow: hidden;
+            border: 1px solid rgba(228, 123, 90, 0.3);
+            position: relative;
+        }
+        
+        .light-mode .map-container {
+            border: 1px solid rgba(228, 123, 90, 0.5);
+        }
+        
+        .map-controls {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        .map-control-btn {
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: none;
+            padding: 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s ease;
+        }
+        
+        .map-control-btn:hover {
+            background: rgba(228, 123, 90, 0.8);
+        }
+        
+        .visitor-legend {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 12px;
+        }
+        
+        .light-mode .visitor-legend {
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+        }
+        
+        .glow-effect {
+            box-shadow: 0 0 20px rgba(228, 123, 90, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .glow-effect:hover {
+            box-shadow: 0 0 30px rgba(228, 123, 90, 0.6);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body class="grid-pattern">
+    <!-- Theme Toggle -->
+    <button class="theme-toggle" id="theme-toggle" title="Toggle Dark/Light Mode">
+        <span id="theme-icon">🌙</span>
+    </button>
+    
+    <!-- Language Selector -->
+    <select class="language-selector" id="language-selector">
+        <option value="id">🇮🇷 Bahasa Indonesia</option>
+        <option value="en">🇺🇸 English</option>
+        <option value="ja">🇯🇵 日本語</option>
+        <option value="ko">🇰🇷 한국어</option>
+        <option value="zh">🇨🇳 中文</option>
+        <option value="fr">🇫🇷 Français</option>
+        <option value="es">🇪🇸 Español</option>
+        <option value="pt">🇵🇹 Português</option>
+        <option value="ru">🇷🇺 Русский</option>
+    </select>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 bg-black bg-opacity-20 backdrop-blur-md border-b border-gray-700 border-opacity-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <h1 class="font-orbitron text-2xl font-bold text-gradient">VISIT LOMBOK ID</h1>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="#home" class="nav-link text-white hover:text-accent px-3 py-2 text-sm font-medium" data-translate="nav.home">Beranda</a>
+                        <a href="destinations.html" class="nav-link text-white hover:text-accent px-3 py-2 text-sm font-medium" data-translate="nav.destinations">Destinasi</a>
+                        <a href="about.html" class="nav-link text-white hover:text-accent px-3 py-2 text-sm font-medium" data-translate="nav.about">Tentang</a>
+                        <a href="contact.html" class="nav-link text-white hover:text-accent px-3 py-2 text-sm font-medium" data-translate="nav.contact">Kontak</a>
+                    </div>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" class="text-white hover:text-accent">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="md:hidden hidden bg-black bg-opacity-90 backdrop-blur-md">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#home" class="text-white hover:text-accent block px-3 py-2 text-base font-medium" data-translate="nav.home">Beranda</a>
+                <a href="destinations.html" class="text-white hover:text-accent block px-3 py-2 text-base font-medium" data-translate="nav.destinations">Destinasi</a>
+                <a href="about.html" class="text-white hover:text-accent block px-3 py-2 text-base font-medium" data-translate="nav.about">Tentang</a>
+                <a href="contact.html" class="text-white hover:text-accent block px-3 py-2 text-base font-medium" data-translate="nav.contact">Kontak</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-bg min-h-screen flex items-center justify-center relative">
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-black via-opacity-20 to-black to-opacity-40"></div>
+        
+        <!-- Floating particles -->
+        <div class="absolute inset-0 overflow-hidden">
+            <div class="floating-element absolute top-20 left-10 w-2 h-2 bg-accent rounded-full opacity-60"></div>
+            <div class="floating-element absolute top-40 right-20 w-1 h-1 bg-white rounded-full opacity-40" style="animation-delay: -2s;"></div>
+            <div class="floating-element absolute bottom-40 left-1/4 w-3 h-3 bg-accent rounded-full opacity-30" style="animation-delay: -4s;"></div>
+        </div>
+        
+        <div class="relative z-10 text-center max-w-4xl mx-auto px-4">
+            <h1 class="font-orbitron text-5xl md:text-7xl font-bold mb-6">
+                <span class="text-white" data-translate="hero.title1">JELAJAHI</span><br>
+                <span class="text-gradient" id="typed-text"></span>
+            </h1>
+            
+            <p class="font-hedvig text-xl md:text-2xl text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed" data-translate="hero.subtitle">
+                Temukan 170 destinasi wisata terbaik di Pulau Lombok dengan pengalaman digital yang futuristik
+            </p>
+            
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <button onclick="scrollToDestinations()" class="btn-futuristic px-8 py-4 rounded-full text-lg font-chiron glow-effect" data-translate="hero.cta1">
+                    MULAI JELAJAH
+                </button>
+                <button onclick="window.location.href='destinations.html'" class="border-2 border-accent text-accent px-8 py-4 rounded-full text-lg font-chiron hover:bg-accent hover:text-bg-primary transition-all duration-300" data-translate="hero.cta2">
+                    LIHAT PETA
+                </button>
+            </div>
+        </div>
+        
+        <!-- Scroll indicator -->
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <div class="w-6 h-10 border-2 border-accent rounded-full flex justify-center">
+                <div class="w-1 h-3 bg-accent rounded-full mt-2 animate-pulse"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Map Section -->
+    <section class="py-20 px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-12 scroll-reveal">
+                <h2 class="font-orbitron text-3xl md:text-4xl font-bold mb-4 text-gradient" data-translate="map.title">
+                    PETA INTERAKTIF LOMBOK
+                </h2>
+                <p class="font-hedvig text-lg text-gray-300" data-translate="map.subtitle">
+                    Jelajahi destinasi dengan peta interaktif real-time. Klik marker untuk detail.
+                </p>
+            </div>
+            
+            <div class="scroll-reveal">
+                <div class="map-container">
+                    <div id="map"></div>
+                    <div class="map-controls">
+                        <button class="map-control-btn" onclick="centerMap()" data-translate="map.center">Center</button>
+                        <button class="map-control-btn" onclick="toggleTraffic()" data-translate="map.traffic">Traffic</button>
+                        <button class="map-control-btn" onclick="toggleSatellite()" data-translate="map.satellite">Satellite</button>
+                    </div>
+                    <div class="visitor-legend">
+                        <div class="font-bold mb-2" data-translate="map.visitorLegend">Kepadatan Pengunjung:</div>
+                        <div class="flex items-center gap-2 mb-1">
+                            <div class="w-3 h-3 rounded-full visitor-low"></div>
+                            <span data-translate="map.low">Sepi (0-30%)</span>
+                        </div>
+                        <div class="flex items-center gap-2 mb-1">
+                            <div class="w-3 h-3 rounded-full visitor-medium"></div>
+                            <span data-translate="map.medium">Lumayan (30-70%)</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <div class="w-3 h-3 rounded-full visitor-high"></div>
+                            <span data-translate="map.high">Ramai (70-100%)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Destination Filter Section -->
+    <section id="destinations" class="py-20 px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16 scroll-reveal">
+                <h2 class="font-orbitron text-4xl md:text-5xl font-bold mb-6 text-gradient" data-translate="destinations.title">
+                    170 DESTINASI MENANTI
+                </h2>
+                <p class="font-hedvig text-xl text-gray-300 max-w-3xl mx-auto" data-translate="destinations.subtitle">
+                    Dari pantai berpasir putih hingga puncak gunung berapi, dari air terjun tersembunyi hingga kekayaan budaya Sasak
+                </p>
+            </div>
+            
+            <!-- Filter Buttons -->
+            <div class="flex flex-wrap justify-center gap-4 mb-16 scroll-reveal">
+                <button class="filter-btn active px-6 py-3 rounded-full font-chiron text-sm md:text-base" data-filter="all" data-translate="filter.all">
+                    SEMUA (170)
+                </button>
+                <button class="filter-btn px-6 py-3 rounded-full font-chiron text-sm md:text-base" data-filter="beach" data-translate="filter.beach">
+                    PANTAI (85)
+                </button>
+                <button class="filter-btn px-6 py-3 rounded-full font-chiron text-sm md:text-base" data-filter="mountain" data-translate="filter.mountain">
+                    GUNUNG (20)
+                </button>
+                <button class="filter-btn px-6 py-3 rounded-full font-chiron text-sm md:text-base" data-filter="waterfall" data-translate="filter.waterfall">
+                    AIR TERJUN (25)
+                </button>
+                <button class="filter-btn px-6 py-3 rounded-full font-chiron text-sm md:text-base" data-filter="culture" data-translate="filter.culture">
+                    BUDAYA (25)
+                </button>
+                <button class="filter-btn px-6 py-3 rounded-full font-chiron text-sm md:text-base" data-filter="culinary" data-translate="filter.culinary">
+                    KULINER (15)
+                </button>
+            </div>
+            
+            <!-- Destination Grid -->
+            <div id="destination-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Destinations will be loaded here -->
+            </div>
+            
+            <div class="text-center mt-12 scroll-reveal">
+                <button onclick="window.location.href='destinations.html'" class="btn-futuristic px-8 py-4 rounded-full text-lg font-chiron glow-effect" data-translate="destinations.explore">
+                    EKSPLORASI SEMUA DESTINASI
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="py-20 px-4 bg-gradient-to-r from-black via-gray-900 to-black">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                <div class="scroll-reveal">
+                    <div class="font-orbitron text-4xl md:text-5xl font-bold text-gradient mb-2" data-count="170">0</div>
+                    <div class="font-hedvig text-gray-300" data-translate="stats.destinations">Destinasi</div>
+                </div>
+                <div class="scroll-reveal">
+                    <div class="font-orbitron text-4xl md:text-5xl font-bold text-gradient mb-2" data-count="12">0</div>
+                    <div class="font-hedvig text-gray-300" data-translate="stats.regencies">Kabupaten</div>
+                </div>
+                <div class="scroll-reveal">
+                    <div class="font-orbitron text-4xl md:text-5xl font-bold text-gradient mb-2" data-count="85">0</div>
+                    <div class="font-hedvig text-gray-300" data-translate="stats.beaches">Pantai</div>
+                </div>
+                <div class="scroll-reveal">
+                    <div class="font-orbitron text-4xl md:text-5xl font-bold text-gradient mb-2" data-count="25">0</div>
+                    <div class="font-hedvig text-gray-300" data-translate="stats.waterfalls">Air Terjun</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-black bg-opacity-50 py-12 px-4 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto text-center">
+            <div class="mb-8">
+                <h3 class="font-orbitron text-3xl font-bold text-gradient mb-4">VISIT LOMBOK ID</h3>
+                <p class="font-hedvig text-gray-300 max-w-2xl mx-auto" data-translate="footer.description">
+                    Portal wisata terlengkap untuk menjelajahi keindahan Pulau Lombok. 
+                    Temukan destinasi impian Anda dengan pengalaman digital yang futuristik.
+                </p>
+            </div>
+            
+            <div class="border-t border-gray-800 pt-8">
+                <p class="font-hedvig text-gray-400 text-sm">
+                    © 2025 Visit Lombok ID. All rights reserved. | Made with ❤️ for Lombok Tourism
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Translation Script -->
+    <script src="translations.js"></script>
+    <!-- Main Script -->
+    <script src="main.js"></script>
+</body>
+</html>
